@@ -1,0 +1,204 @@
+{
+    "preguntes": [
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Titanic'?",
+            "resposta_correcta": "1997",
+            "respostes_incorrectes": [
+                "1995",
+                "2000",
+                "1993"
+            ],
+            "imatge": "https://exemple.com/titanic.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Matrix'?",
+            "resposta_correcta": "1999",
+            "respostes_incorrectes": [
+                "1997",
+                "2001",
+                "2003"
+            ],
+            "imatge": "https://exemple.com/matrix.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Jurassic Park'?",
+            "resposta_correcta": "1993",
+            "respostes_incorrectes": [
+                "1995",
+                "1997",
+                "1991"
+            ],
+            "imatge": "https://exemple.com/jurassicpark.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'El Padrí'?",
+            "resposta_correcta": "1972",
+            "respostes_incorrectes": [
+                "1975",
+                "1970",
+                "1978"
+            ],
+            "imatge": "https://exemple.com/godfather.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Pulp Fiction'?",
+            "resposta_correcta": "1994",
+            "respostes_incorrectes": [
+                "1992",
+                "1996",
+                "1998"
+            ],
+            "imatge": "https://exemple.com/pulpfiction.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Star Wars: A New Hope'?",
+            "resposta_correcta": "1977",
+            "respostes_incorrectes": [
+                "1975",
+                "1979",
+                "1980"
+            ],
+            "imatge": "https://exemple.com/starwars.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Forrest Gump'?",
+            "resposta_correcta": "1994",
+            "respostes_incorrectes": [
+                "1992",
+                "1996",
+                "1990"
+            ],
+            "imatge": "https://exemple.com/forrestgump.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Gladiator'?",
+            "resposta_correcta": "2000",
+            "respostes_incorrectes": [
+                "1998",
+                "2002",
+                "2005"
+            ],
+            "imatge": "https://exemple.com/gladiator.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Inception'?",
+            "resposta_correcta": "2010",
+            "respostes_incorrectes": [
+                "2008",
+                "2012",
+                "2006"
+            ],
+            "imatge": "https://exemple.com/inception.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Avatar'?",
+            "resposta_correcta": "2009",
+            "respostes_incorrectes": [
+                "2007",
+                "2011",
+                "2005"
+            ],
+            "imatge": "https://exemple.com/avatar.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'The Dark Knight'?",
+            "resposta_correcta": "2008",
+            "respostes_incorrectes": [
+                "2006",
+                "2010",
+                "2004"
+            ],
+            "imatge": "https://exemple.com/thedarkknight.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'The Avengers'?",
+            "resposta_correcta": "2012",
+            "respostes_incorrectes": [
+                "2010",
+                "2014",
+                "2008"
+            ],
+            "imatge": "https://exemple.com/theavengers.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'La La Land'?",
+            "resposta_correcta": "2016",
+            "respostes_incorrectes": [
+                "2014",
+                "2018",
+                "2015"
+            ],
+            "imatge": "https://exemple.com/lalaland.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'The Shawshank Redemption'?",
+            "resposta_correcta": "1994",
+            "respostes_incorrectes": [
+                "1992",
+                "1996",
+                "1991"
+            ],
+            "imatge": "https://exemple.com/shawshank.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Fight Club'?",
+            "resposta_correcta": "1999",
+            "respostes_incorrectes": [
+                "1997",
+                "2001",
+                "1995"
+            ],
+            "imatge": "https://exemple.com/fightclub.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Schindler's List'?",
+            "resposta_correcta": "1993",
+            "respostes_incorrectes": [
+                "1991",
+                "1995",
+                "1990"
+            ],
+            "imatge": "https://exemple.com/schindlerslist.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Interstellar'?",
+            "resposta_correcta": "2014",
+            "respostes_incorrectes": [
+                "2012",
+                "2016",
+                "2010"
+            ],
+            "imatge": "https://exemple.com/interstellar.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'The Lord of the Rings: The Fellowship of the Ring'?",
+            "resposta_correcta": "2001",
+            "respostes_incorrectes": [
+                "1999",
+                "2003",
+                "2005"
+            ],
+            "imatge": "https://exemple.com/lotr.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Casablanca'?",
+            "resposta_correcta": "1942",
+            "respostes_incorrectes": [
+                "1940",
+                "1945",
+                "1939"
+            ],
+            "imatge": "https://exemple.com/casablanca.jpg"
+        },
+        {
+            "pregunta": "En quin any es va estrenar la pel·lícula 'Back to the Future'?",
+            "resposta_correcta": "1985",
+            "respostes_incorrectes": [
+                "1983",
+                "1987",
+                "1990"
+            ],
+            "imatge": "https://exemple.com/backtothefuture.jpg"
+        }
+    ]
+}
