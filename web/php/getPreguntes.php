@@ -3,7 +3,6 @@
 header('Content-Type: application/json');
 session_start();
 
-// Càrrega del JSON de preguntes
 $jsonData = file_get_contents('../../doc/data.json');
 $questions = json_decode($jsonData, true)['preguntes'];
 
@@ -14,7 +13,6 @@ $selectedQuestions = array_slice($questions, 0, $numPreguntes);
 $_SESSION['questions'] = $selectedQuestions;
 
 foreach ($selectedQuestions as &$question) {
-    // Combinam les respostas correctes i incorrectas
     $allAnswers = $question['respostes_incorrectes'];
     array_push($allAnswers, $question['resposta_correcta']);
     shuffle($allAnswers);
@@ -23,10 +21,8 @@ foreach ($selectedQuestions as &$question) {
     unset($question['resposta_correcta']);
     unset($question['respostes_incorrectes']);
 
-    // Afegim l'array de respostes
     $question['respostes'] = $allAnswers;
 }
 
-// Retornar les preguntes seleccionades com a resposta JSON
 echo json_encode($selectedQuestions);
 ?>

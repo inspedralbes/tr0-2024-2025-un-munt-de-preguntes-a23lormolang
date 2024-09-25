@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <center><h1>PEDAZO DE JUEGO</h1></center>
-    <div id="partida"></div>
-    <script src="js/functions.js"></script>
-    <script>loadQuestions();</script>
-    <form action="">
-        <br><br>
-        <center><button onclick="finalitzarPartida()"> Finalitzar El Joc </button></center>
+    <div id="pagina">
+        <center>
+            <h1>PEDAZO DE JUEGO</h1>
+        </center>
+        <div id="partida"></div>
         <br>
-    </form>
+        <button id="prev">Anterior</button>
+        <button id="next">Següent</button>
+        <br><br>
+        <center><button id="final"> Finalitzar El Joc </button></center>
+        <br>
+    </div>
+    <script src="js/functions.js"></script>
+    <div id="final"></div>
 </body>
+
 </html>
