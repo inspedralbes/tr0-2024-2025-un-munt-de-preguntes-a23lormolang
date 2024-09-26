@@ -8,19 +8,20 @@ function loadQuestions() {
             return response.json();
         })
         .then(data => {
-            questions = data
+            const estatDeLaPartida = {
+                indexPregunta: 0,
+                respostes: [],
+            };
             estatDeLaPartida.respostes = new Array(data.length).fill({ id: 0, feta: false, resposta: 0 }); // Inicializamos las respuestas
-            pintaPreguntes();
-        });
+            pintaPreguntes(estatDeLaPartida, data);
 
+            inicializarEventos(estatDeLaPartida, data);
+        });
+    
 }
 
-const estatDeLaPartida = {
-    indexPregunta: 0,
-    respostes: [],
-};
 
-function pintaPreguntes() {
+function pintaPreguntes(estatDeLaPartida, questions) {
     let opcions = ['A', 'B', 'C', 'D'];
     let htmlString = '';
 
@@ -29,50 +30,54 @@ function pintaPreguntes() {
         opcions[iResposta] = questions[estatDeLaPartida.indexPregunta].respostes[iResposta];
         htmlString += `<br><button class="resposta" idP="${estatDeLaPartida.indexPregunta}" idR="${opcions[iResposta]}">${opcions[iResposta]}</button>`
     }
-    actualitzarBotons();
 
     const divPartida = document.getElementById("partida");
     divPartida.innerHTML = htmlString;
+
+    actualitzarBotons(estatDeLaPartida, questions);
+
 }
 
-document.getElementById('partida').addEventListener('click', function (e) {
-    if (e.target.classList.contains('resposta')) {
-        gestionarResposta(e.target.getAttribute("idP"), e.target.getAttribute("idR"));
-    }
-});
+function inicializarEventos(estatDeLaPartida, questions) {
 
-document.getElementById('next').addEventListener('click', function () {
-    if (estatDeLaPartida.indexPregunta < questions.length - 1) {
-        estatDeLaPartida.indexPregunta++;
-        pintaPreguntes();
-    }
-});
+    document.getElementById('partida').addEventListener('click', function (e) {
+        if (e.target.classList.contains('resposta')) {
+            gestionarResposta(estatDeLaPartida, e.target.getAttribute("idP"), e.target.getAttribute("idR"));
+        }
+    });
 
-document.getElementById('prev').addEventListener('click', function () {
-    if (estatDeLaPartida.indexPregunta > 0) {
-        estatDeLaPartida.indexPregunta--;
-        pintaPreguntes();
-    }
-});
+    document.getElementById('next').addEventListener('click', function () {
+        if (estatDeLaPartida.indexPregunta < questions.length - 1) {
+            estatDeLaPartida.indexPregunta++;
+            pintaPreguntes(estatDeLaPartida, questions);
+        }
+    });
 
-document.getElementById('final').addEventListener('click', function () {
-    finalitzarPartida()
-});
+    document.getElementById('prev').addEventListener('click', function () {
+        if (estatDeLaPartida.indexPregunta > 0) {
+            estatDeLaPartida.indexPregunta--;
+            pintaPreguntes(estatDeLaPartida, questions);
+        }
+    });
+
+    document.getElementById('final').addEventListener('click', function () {
+        finalitzarPartida(estatDeLaPartida);
+    });
+}
 
 
-function actualitzarBotons() {
+function actualitzarBotons(estatDeLaPartida, questions) {
     document.getElementById('prev').disabled = estatDeLaPartida.indexPregunta === 0;
     document.getElementById('next').disabled = estatDeLaPartida.indexPregunta === questions.length - 1;
     document.getElementById('final').disabled = estatDeLaPartida.indexPregunta < questions.length - 1;
 }
 
-function gestionarResposta(p, r) {
-    let repetit = false;
+function gestionarResposta(estatDeLaPartida, p, r) {
     console.log(p, r);
     estatDeLaPartida.respostes[p] = { id: p, feta: true, resposta: r }
 }
 
-function finalitzarPartida() {
+function finalitzarPartida(estatDeLaPartida) {
 
     fetch('php/finalitza.php', {
         method: 'POST',
@@ -96,7 +101,3 @@ function actualizarFinalizar(data) {
     const divP = document.getElementById('pagina');
     divP.innerHTML = htmlS;
 }
-
-
-
-
