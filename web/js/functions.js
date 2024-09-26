@@ -89,6 +89,7 @@ function finalitzarPartida(estatDeLaPartida) {
         .then(response => response.json())
         .then(data => {
             actualizarFinalizar(data)
+            guardarPartidaBD(estatDeLaPartida)
             console.log(`Has encertat ${data.correctAnswers} de ${data.totalQuestions} preguntes.`);
         });
 
