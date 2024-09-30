@@ -8,6 +8,7 @@ function loadQuestions() {
             return response.json();
         })
         .then(data => {
+            console.log(data);
             const estatDeLaPartida = {
                 indexPregunta: 0,
                 respostes: [],

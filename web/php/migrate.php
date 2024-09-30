@@ -1,42 +1,40 @@
 <?php
-$servername = "localhost";
-$database = "jocPreguntes";
-$username = "lorenzo";
-$password = "pirineus";
+
 
 try {
-    $conn = new mysqli($servername, $username, $password, $database);
+    include("connexioBD.php");
 
     $json = file_get_contents('../../doc/data.json');
     $data = json_decode($json, true);
 
-    //Comprovaciones tablas create
-
-    $sql = "CREATE TABLE IF NOT EXISTS preguntes (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        pregunta VARCHAR(255) NOT NULL,
-        resposta_correcta VARCHAR(255) NOT NULL,
-        imatge VARCHAR(255) DEFAULT NULL
-    )";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-
-    //Cargar bd
-
-    $sql = "INSERT INTO preguntes (pregunta, resposta_correcta, imatge) VALUES (?, ?, ?)";
-    $stmt = $conn->prepare($sql);
+    $sql = "INSERT INTO preguntes (pregunta, imatge) VALUES (?, ?)";
+    $stmt = $conn->prepare("INSERT INTO preguntes (pregunta, imatge) VALUES (?, ?)");
 
     foreach ($data['preguntes'] as $pregunta) {
-        $stmt->bind_param(
-            "sis",  // Tipos de datos: string, int
-            $pregunta['pregunta'],
-            $pregunta['resposta_correcta'],
-            $pregunta['imatge']
-        );
-        if (!$stmt->execute()) {
-            echo "Error en la inserció: " . $stmt->error . "<br>";
+        $stmtPregunta = $conn->prepare("INSERT INTO preguntes (pregunta, imatge) VALUES (?, ?)");
+        $stmtPregunta->bind_param("ss", $pregunta['pregunta'], $pregunta['imatge']);
+
+        if ($stmtPregunta->execute()) {
+            // Obtenir l'ID de la pregunta que s'acaba d'inserir
+            $pregunta_id = $stmtPregunta->insert_id;
+
+            $stmtResposta = $conn->prepare("INSERT INTO respostes (pregunta_id, resposta, correcta) VALUES (?, ?, ?)");
+            $correcta = 1;  
+            $stmtResposta->bind_param("isi", $pregunta_id, $pregunta['resposta_correcta'], $correcta);
+            $stmtResposta->execute();
+
+            $correcta = 0; 
+            foreach ($pregunta['respostes_incorrectes'] as $resposta_incorrecta) {
+                $stmtResposta->bind_param("isi", $pregunta_id, $resposta_incorrecta, $correcta);
+                $stmtResposta->execute();
+            }
+        } else {
+            echo "Error inserint la pregunta: " . $pregunta['pregunta'] . "<br>";
         }
+
+        $stmtPregunta->close();
+        $stmtResposta->close();
+
     }
 
     echo "Connected to $dbname at $host successfully.";
