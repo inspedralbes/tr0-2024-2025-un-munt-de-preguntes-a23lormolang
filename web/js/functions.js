@@ -8,7 +8,6 @@ function loadQuestions() {
             return response.json();
         })
         .then(data => {
-            console.log(data);
             const estatDeLaPartida = {
                 indexPregunta: 0,
                 respostes: [],
@@ -18,7 +17,7 @@ function loadQuestions() {
 
             inicializarEventos(estatDeLaPartida, data);
         });
-    
+
 }
 
 
@@ -90,7 +89,6 @@ function finalitzarPartida(estatDeLaPartida) {
         .then(response => response.json())
         .then(data => {
             actualizarFinalizar(data)
-            guardarPartidaBD(estatDeLaPartida)
             console.log(`Has encertat ${data.correctAnswers} de ${data.totalQuestions} preguntes.`);
         });
 
