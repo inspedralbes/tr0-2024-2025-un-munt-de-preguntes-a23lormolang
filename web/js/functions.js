@@ -1,5 +1,9 @@
 iniciarUsuario();
 
+function crearSaltoDeLinea() {
+    return document.createElement("br");
+}
+
 function iniciarUsuario() {
     const divPagina = document.getElementById("pagina");
     divPagina.classList.add("oculto");
@@ -27,13 +31,19 @@ function iniciarUsuario() {
 
     divInici.appendChild(parrafo1);
     divInici.appendChild(input1);
-    divInici.appendChild(salt);
-    divInici.appendChild(salt);
+    divInici.appendChild(crearSaltoDeLinea());
+    divInici.appendChild(crearSaltoDeLinea());
     divInici.appendChild(parrafo2);
     divInici.appendChild(input2);
-    divInici.appendChild(salt);
-    divInici.appendChild(salt);
+    divInici.appendChild(crearSaltoDeLinea());
     divInici.appendChild(boto);
+    const adminB = document.createElement("a");
+    adminB.href = "admin.html"
+    adminB.textContent = "Admin Mode"
+    divInici.appendChild(crearSaltoDeLinea());
+    divInici.appendChild(crearSaltoDeLinea());
+    divInici.appendChild(crearSaltoDeLinea());
+    divInici.appendChild(adminB);
 
     document.getElementById('jugar').addEventListener('click', function () {
         divInici.classList.add("oculto");
@@ -45,7 +55,6 @@ function iniciarUsuario() {
 
 function loadQuestions() {
     let numPreguntes = 5;
-
     fetch(`php/getPreguntes.php?numPreguntes=${numPreguntes}`)
         .then(response => {
             return response.json();
@@ -57,7 +66,6 @@ function loadQuestions() {
             };
             estatDeLaPartida.respostes = new Array(data.length).fill({ id: 0, feta: false, resposta: 0 }); // Inicializamos las respuestas
             pintaPreguntes(estatDeLaPartida, data);
-
             inicializarEventos(estatDeLaPartida, data);
         });
 
