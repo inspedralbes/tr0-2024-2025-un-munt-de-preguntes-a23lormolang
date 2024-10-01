@@ -1,4 +1,47 @@
-loadQuestions();
+iniciarUsuario();
+
+function iniciarUsuario() {
+    const divPagina = document.getElementById("pagina");
+    divPagina.classList.add("oculto");
+    const divInici = document.getElementById("inici");
+
+    const parrafo1 = document.createElement("p");
+    parrafo1.textContent = "Insereix l'usuari: "
+
+    const input1 = document.createElement("input");
+    input1.type = "text"
+    input1.id = "name"
+    input1.placeholder = "Nombre"
+
+    const parrafo2 = document.createElement("p");
+    parrafo2.textContent = "Introdueix el nombre de preguntes: "
+
+    const input2 = document.createElement("input");
+    input2.type = "number"
+    input2.id = "nPreguntes"
+
+    const boto = document.createElement("button");
+    boto.id = "jugar"
+    boto.textContent = "Jugar"
+    const salt = document.createElement("br");
+
+    divInici.appendChild(parrafo1);
+    divInici.appendChild(input1);
+    divInici.appendChild(salt);
+    divInici.appendChild(salt);
+    divInici.appendChild(parrafo2);
+    divInici.appendChild(input2);
+    divInici.appendChild(salt);
+    divInici.appendChild(salt);
+    divInici.appendChild(boto);
+
+    document.getElementById('jugar').addEventListener('click', function () {
+        divInici.classList.add("oculto");
+        divPagina.classList.remove("oculto");
+        loadQuestions();
+    });
+}
+
 
 function loadQuestions() {
     let numPreguntes = 5;
@@ -61,8 +104,11 @@ function inicializarEventos(estatDeLaPartida, questions) {
     });
 
     document.getElementById('final').addEventListener('click', function () {
+        const divPagina = document.getElementById("pagina");
+        divPagina.classList.add("oculto");
         finalitzarPartida(estatDeLaPartida);
     });
+
 }
 
 
@@ -78,7 +124,7 @@ function gestionarResposta(estatDeLaPartida, p, r) {
 }
 
 function finalitzarPartida(estatDeLaPartida) {
-
+    
     fetch('php/finalitza.php', {
         method: 'POST',
         headers: {
@@ -86,18 +132,30 @@ function finalitzarPartida(estatDeLaPartida) {
         },
         body: JSON.stringify(estatDeLaPartida)
     })
-        .then(response => response.json())
-        .then(data => {
+    .then(response => response.json())
+    .then(data => {
             actualizarFinalizar(data)
             console.log(`Has encertat ${data.correctAnswers} de ${data.totalQuestions} preguntes.`);
         });
+        
+    }
+    
+    function actualizarFinalizar(data) {
+        const divFinal = document.getElementById("finalitzar");
+        const respuesta = document.createElement("h4");
+        respuesta.textContent = `Has encertat ${data.correctAnswers} de ${data.totalQuestions} preguntes.`;
+        const volver = document.createElement("button");
+        volver.id = "tornaInici"
+        volver.textContent = "Torna a començar"
+        divFinal.appendChild(respuesta);
+        divFinal.appendChild(volver);
 
-}
-
-function actualizarFinalizar(data) {
-    let htmlS = ''
-    htmlS = `<h4>Has encertat ${data.correctAnswers} de ${data.totalQuestions} preguntes.</h4>`;
-    htmlS += `<br><br><a href="index.html">Torna a començar</a>`;
-    const divP = document.getElementById('pagina');
-    divP.innerHTML = htmlS;
+        document.getElementById('tornaInici').addEventListener('click', function () {
+            const divInici = document.getElementById("inici");
+            const divFinal = document.getElementById("finalitzar");
+            divFinal.classList.add("oculto");
+            document.getElementById("name").value = ''
+            document.getElementById("nPreguntes").value = ''
+            divInici.classList.remove("oculto");
+        });
 }
