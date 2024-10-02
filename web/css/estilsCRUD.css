@@ -1,0 +1,59 @@
+.oculto{
+    display: none;
+}
+
+/* Estilos para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px; 
+    text-align: left;
+}
+
+/* Estilos para las celdas */
+table th, table td {
+    padding: 8px 10px; 
+    border: 1px solid #ddd;
+}
+
+/* Estilos para la fila de encabezado */
+table thead th {
+    background-color: #4CAF50;
+    color: white;
+    text-transform: uppercase;
+    font-size: 13px; 
+}
+
+/* Estilos para las filas impares (colores alternos) */
+table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+/* Hover sobre las filas */
+table tbody tr:hover {
+    background-color: #ddd;
+}
+
+/* Estilo para los botones */
+button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 6px 10px; 
+    text-align: center;
+    font-size: 12px; 
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Hover sobre los botones */
+button:hover {
+    background-color: #45a049;
+}
+
+input {
+    display: block;
+}
