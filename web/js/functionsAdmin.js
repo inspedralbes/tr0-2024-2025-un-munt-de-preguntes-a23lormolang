@@ -1,3 +1,16 @@
+
+document.getElementById("taula").addEventListener('click', function (event) {
+    const target = event.target;
+    if (target.tagName === 'BUTTON') {
+        const idP = target.getAttribute('idP'); 
+        if (target.textContent === 'Eliminar') {
+            eliminarPregunta(idP);
+        } else if (target.textContent === 'Editar') {
+            editarPregunta(idP);
+        }
+    }
+});
+
 loadQuestions();
 
 function loadQuestions() {
@@ -16,6 +29,10 @@ function carregarTaula(preguntes) {
     const divTaula = document.getElementById("taula");
     divTaula.classList.remove("oculto");
 
+    //Vaciar DOM
+    while (divTaula.firstChild) {
+        divTaula.removeChild(divTaula.firstChild);
+    }
     const tabla = document.createElement("table");
     tabla.style.border = "1";
 
@@ -28,7 +45,7 @@ function carregarTaula(preguntes) {
         headerRow.appendChild(th);
     }
     tabla.appendChild(headerRow);
-
+    //Crear Filas
     for (let i = 0; i < preguntes.length; i++) {
         const row = document.createElement("tr");
         const tdId = document.createElement("td");
@@ -88,6 +105,11 @@ function insertarPregunta() {
     const divInsertar = document.getElementById("insert");
     divInsertar.classList.remove("oculto");
 
+    //Vaciar DOM
+    while (divInsertar.firstChild) {
+        divInsertar.removeChild(divInsertar.firstChild);
+    }
+
     const iPregunta = document.createElement("input");
     iPregunta.placeholder = "Pregunta"
     divInsertar.appendChild(iPregunta);
@@ -126,15 +148,50 @@ function insertarPregunta() {
             Imatge: iImatge.value,
         };
 
-        fetch(`php/insertarBD.php?${enviarInsertar.toString()}`)
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                divInsertar.classList.add("oculto");
-                loadQuestions();
-            });
+
+        fetch('php/insertarBD.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(enviarInsertar)
+        })
+        .then(response =>{
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+            return response.text(); 
+        })
+        .then(data => {
+            divInsertar.classList.add("oculto");
+            loadQuestions();
+        });
 
     });
+
+
+}
+
+function eliminarPregunta(idP){
+    console.log(idP);
+
+    fetch('php/eliminarPregunta.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ idP: idP })
+    })
+    .then(response => {return response.text();} )
+    .then(data => {
+        loadQuestions();
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+}
+
+function editarPregunta(idP){
+    
 
 }
