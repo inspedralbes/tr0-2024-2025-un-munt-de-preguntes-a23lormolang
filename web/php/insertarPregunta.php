@@ -7,7 +7,6 @@ try {
 
 
     //Insertar Pregunta
-    $sql = "INSERT INTO preguntes (pregunta, imatge) VALUES (?, ?)";
     $stmt = $conn->prepare("INSERT INTO preguntes (pregunta, imatge) VALUES (?, ?)");
     $stmt->bind_param("ss", $insertar['Pregunta'], $insertar['Imatge']);
     $stmt->execute();

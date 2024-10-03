@@ -4,6 +4,26 @@ function crearSaltoDeLinea() {
     return document.createElement("br");
 }
 
+function iniciarTemporizador(duracion, estatDeLaPartida) {
+    let tiempoRestante = duracion;
+    const displayTemporizador = document.getElementById('temporizador');
+
+    const intervalo = setInterval(() => {
+        const minutos = Math.floor(tiempoRestante / 60);
+        const segundos = tiempoRestante % 60;
+        const tiempoFormateado = `${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+        displayTemporizador.textContent = tiempoFormateado;
+
+        tiempoRestante--;
+
+        if (tiempoRestante < 0) {
+            clearInterval(intervalo);
+            displayTemporizador.textContent = "¡Tiempo agotado!";
+            finalitzarPartida(estatDeLaPartida);
+        }
+    }, 1000);
+}
+
 function iniciarUsuario() {
     const divPagina = document.getElementById("pagina");
     divPagina.classList.add("oculto");
@@ -37,13 +57,18 @@ function iniciarUsuario() {
     divInici.appendChild(input2);
     divInici.appendChild(crearSaltoDeLinea());
     divInici.appendChild(boto);
-    const adminB = document.createElement("a");
-    adminB.href = "admin.html"
-    adminB.textContent = "Admin Mode"
     divInici.appendChild(crearSaltoDeLinea());
     divInici.appendChild(crearSaltoDeLinea());
     divInici.appendChild(crearSaltoDeLinea());
-    divInici.appendChild(adminB);
+
+    const botoMenu = document.createElement("button");
+    botoMenu.id = "menu"
+    botoMenu.textContent = "Menu Preguntes"
+    divInici.appendChild(botoMenu);
+    document.getElementById('menu').addEventListener('click', function () {
+        window.location.href = "admin.html";
+    });
+
 
     document.getElementById('jugar').addEventListener('click', function () {
         divInici.classList.add("oculto");
@@ -65,6 +90,7 @@ function loadQuestions() {
                 respostes: [],
             };
             estatDeLaPartida.respostes = new Array(data.length).fill({ id: 0, feta: false, resposta: 0 }); // Inicializamos las respuestas
+            iniciarTemporizador(30, estatDeLaPartida)
             pintaPreguntes(estatDeLaPartida, data);
             inicializarEventos(estatDeLaPartida, data);
         });
@@ -132,7 +158,7 @@ function gestionarResposta(estatDeLaPartida, p, r) {
 }
 
 function finalitzarPartida(estatDeLaPartida) {
-    
+
     fetch('php/finalitza.php', {
         method: 'POST',
         headers: {
@@ -140,30 +166,30 @@ function finalitzarPartida(estatDeLaPartida) {
         },
         body: JSON.stringify(estatDeLaPartida)
     })
-    .then(response => response.json())
-    .then(data => {
+        .then(response => response.json())
+        .then(data => {
             actualizarFinalizar(data)
             console.log(`Has encertat ${data.correctAnswers} de ${data.totalQuestions} preguntes.`);
         });
-        
-    }
-    
-    function actualizarFinalizar(data) {
-        const divFinal = document.getElementById("finalitzar");
-        const respuesta = document.createElement("h4");
-        respuesta.textContent = `Has encertat ${data.correctAnswers} de ${data.totalQuestions} preguntes.`;
-        const volver = document.createElement("button");
-        volver.id = "tornaInici"
-        volver.textContent = "Torna a començar"
-        divFinal.appendChild(respuesta);
-        divFinal.appendChild(volver);
 
-        document.getElementById('tornaInici').addEventListener('click', function () {
-            const divInici = document.getElementById("inici");
-            const divFinal = document.getElementById("finalitzar");
-            divFinal.classList.add("oculto");
-            document.getElementById("name").value = ''
-            document.getElementById("nPreguntes").value = ''
-            divInici.classList.remove("oculto");
-        });
+}
+
+function actualizarFinalizar(data) {
+    const divFinal = document.getElementById("finalitzar");
+    const respuesta = document.createElement("h4");
+    respuesta.textContent = `Has encertat ${data.correctAnswers} de ${data.totalQuestions} preguntes.`;
+    const volver = document.createElement("button");
+    volver.id = "tornaInici"
+    volver.textContent = "Torna a començar"
+    divFinal.appendChild(respuesta);
+    divFinal.appendChild(volver);
+
+    document.getElementById('tornaInici').addEventListener('click', function () {
+        const divInici = document.getElementById("inici");
+        const divFinal = document.getElementById("finalitzar");
+        divFinal.classList.add("oculto");
+        document.getElementById("name").value = ''
+        document.getElementById("nPreguntes").value = ''
+        divInici.classList.remove("oculto");
+    });
 }

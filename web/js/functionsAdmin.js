@@ -2,7 +2,7 @@
 document.getElementById("taula").addEventListener('click', function (event) {
     const target = event.target;
     if (target.tagName === 'BUTTON') {
-        const idP = target.getAttribute('idP'); 
+        const idP = target.getAttribute('idP');
         if (target.textContent === 'Eliminar') {
             eliminarPregunta(idP);
         } else if (target.textContent === 'Editar') {
@@ -10,6 +10,7 @@ document.getElementById("taula").addEventListener('click', function (event) {
         }
     }
 });
+
 
 loadQuestions();
 
@@ -21,8 +22,6 @@ function loadQuestions() {
         .then(data => {
             carregarTaula(data);
         });
-
-
 }
 
 function carregarTaula(preguntes) {
@@ -94,7 +93,15 @@ function carregarTaula(preguntes) {
     botoInsertar.textContent = "Insertar Pregunta"
     divTaula.appendChild(botoInsertar);
 
-    document.getElementById('insertar').addEventListener('click', function () {
+    const botoTornar = document.createElement("button");
+    botoTornar.id = "iniciTornar"
+    botoTornar.textContent = "Tornar al joc"
+    divTaula.appendChild(botoTornar)
+    document.getElementById('iniciTornar').addEventListener('click', function () {
+        window.location.href = "index.html";
+    });
+
+    document.getElementById("insertar").addEventListener('click', function () {
         divTaula.classList.add("oculto");
         insertarPregunta();
     });
@@ -136,6 +143,15 @@ function insertarPregunta() {
     divInsertar.appendChild(salt);
     divInsertar.appendChild(botoInsertar);
 
+    const botoTornar = document.createElement("button");
+    botoTornar.id = "iTornar"
+    botoTornar.textContent = "Tornar al menu"
+    divInsertar.appendChild(botoTornar)
+    document.getElementById('iTornar').addEventListener('click', function () {
+        divInsertar.classList.add("oculto");
+        loadQuestions();
+    });
+
     document.getElementById('eInsertar').addEventListener('click', function () {
         const respostes = respostesInputs.map(input => input.value);
         const enviarInsertar = {
@@ -149,31 +165,30 @@ function insertarPregunta() {
         };
 
 
-        fetch('php/insertarBD.php', {
+        fetch('php/insertarPregunta.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(enviarInsertar)
         })
-        .then(response =>{
-            if (!response.ok) {
-                throw new Error('Error en la solicitud');
-            }
-            return response.text(); 
-        })
-        .then(data => {
-            divInsertar.classList.add("oculto");
-            loadQuestions();
-        });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la solicitud');
+                }
+                return response.text();
+            })
+            .then(data => {
+                divInsertar.classList.add("oculto");
+                loadQuestions();
+            });
 
     });
 
 
 }
 
-function eliminarPregunta(idP){
-    console.log(idP);
+function eliminarPregunta(idP) {
 
     fetch('php/eliminarPregunta.php', {
         method: 'POST',
@@ -182,16 +197,107 @@ function eliminarPregunta(idP){
         },
         body: JSON.stringify({ idP: idP })
     })
-    .then(response => {return response.text();} )
-    .then(data => {
-        loadQuestions();
-    })
-    .catch(error => {
-        console.error('Error en la solicitud:', error);
-    });
+        .then(response => { return response.text(); })
+        .then(data => {
+            loadQuestions();
+        })
+        .catch(error => {
+            console.error('Error en la solicitud:', error);
+        });
 }
 
-function editarPregunta(idP){
-    
+function editarPregunta(idP) {
+    const divTaula = document.getElementById("taula");
+    divTaula.classList.add("oculto");
+    const nRespostes = 4;
+    const divEditar = document.getElementById("edit");
+    divEditar.classList.remove("oculto");
+
+    //Vaciar DOM
+    while (divEditar.firstChild) {
+        divEditar.removeChild(divEditar.firstChild);
+    }
+
+    fetch(`php/getBD.php`)
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            const pregunta = data.find(p => p.id == idP);
+            console.log(pregunta);
+            const iPregunta = document.createElement("input");
+            iPregunta.placeholder = `${pregunta['pregunta']}`;
+            divEditar.appendChild(iPregunta);
+            const respostesInputs = [];
+            for (let i = 0; i < nRespostes; i++) {
+                const iResposta = document.createElement("input");
+                iResposta.placeholder = `${pregunta[`respostes`][i]['resposta']}`
+                respostesInputs.push(iResposta);
+                divEditar.appendChild(iResposta);
+            }
+            const iRespostaC = document.createElement("input");
+            iRespostaC.type = "number"
+            iRespostaC.placeholder = "Nombre de la Resposta Correcta"
+            const iImatge = document.createElement("input");
+            iImatge.placeholder = `${pregunta['imatge']}`
+
+            divEditar.appendChild(iRespostaC);
+            divEditar.appendChild(iImatge);
+
+            const botoEditar = document.createElement("button");
+            botoEditar.id = "eEditar"
+            botoEditar.textContent = "Editar Pregunta"
+            const salt = document.createElement("br");
+            divEditar.appendChild(salt);
+            divEditar.appendChild(botoEditar);
+
+            const botoTornar = document.createElement("button");
+            botoTornar.id = "eTornar"
+            botoTornar.textContent = "Tornar al menu"
+            divEditar.appendChild(botoTornar)
+            document.getElementById('eTornar').addEventListener('click', function () {
+                divEditar.classList.add("oculto");
+                loadQuestions();
+            });
+
+            document.getElementById('eEditar').addEventListener('click', function () {
+                const respostes = respostesInputs.map(input => input.value);
+                const enviarEditar = {
+                    id: idP,
+                    Pregunta: iPregunta.value,
+                    idR1: pregunta[`respostes`][0]['id'],
+                    Resposta1: respostes[0],
+                    idR2: pregunta[`respostes`][1]['id'],
+                    Resposta2: respostes[1],
+                    idR3: pregunta[`respostes`][2]['id'],
+                    Resposta3: respostes[2],
+                    idR4: pregunta[`respostes`][3]['id'],
+                    Resposta4: respostes[3],
+                    RespostaC: iRespostaC.value,
+                    Imatge: iImatge.value,
+                };
+
+
+                fetch('php/editarPregunta.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(enviarEditar)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error en la solicitud');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        divEditar.classList.add("oculto");
+                        loadQuestions();
+                    });
+
+            });
+
+        });
 
 }
