@@ -28,6 +28,7 @@ if ($resultPreguntes->num_rows > 0) {
             }
             $respostes[] = $rowResposta['resposta'];
         }
+        shuffle($respostes);
         $preguntes[] = [
             'pregunta' => $rowPregunta['pregunta'],
             'respostes' => $respostes,

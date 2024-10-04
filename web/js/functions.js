@@ -1,3 +1,6 @@
+// Variables globales
+let intervaloTemporizador;
+
 iniciarUsuario();
 
 function crearSaltoDeLinea() {
@@ -8,7 +11,13 @@ function iniciarTemporizador(duracion, estatDeLaPartida) {
     let tiempoRestante = duracion;
     const displayTemporizador = document.getElementById('temporizador');
 
-    const intervalo = setInterval(() => {
+    // Si ya existe un temporizador en ejecución, lo detenemos antes de iniciar uno nuevo
+    if (intervaloTemporizador) {
+        displayTemporizador.textContent = "";
+        clearInterval(intervaloTemporizador);
+    }
+
+    intervaloTemporizador = setInterval(() => {
         const minutos = Math.floor(tiempoRestante / 60);
         const segundos = tiempoRestante % 60;
         const tiempoFormateado = `${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
@@ -17,16 +26,22 @@ function iniciarTemporizador(duracion, estatDeLaPartida) {
         tiempoRestante--;
 
         if (tiempoRestante < 0) {
-            clearInterval(intervalo);
+            clearInterval(intervaloTemporizador);
+            const divPagina = document.getElementById("pagina");
+            divPagina.classList.add("oculto");
+
             displayTemporizador.textContent = "¡Tiempo agotado!";
             finalitzarPartida(estatDeLaPartida);
+            displayTemporizador.textContent = "";
         }
     }, 1000);
 }
 
 function iniciarUsuario() {
     const divPagina = document.getElementById("pagina");
+    const divFinal = document.getElementById("finalitzar");
     divPagina.classList.add("oculto");
+    divFinal.classList.add("oculto");
     const divInici = document.getElementById("inici");
 
     const parrafo1 = document.createElement("p");
@@ -65,21 +80,24 @@ function iniciarUsuario() {
     botoMenu.id = "menu"
     botoMenu.textContent = "Menu Preguntes"
     divInici.appendChild(botoMenu);
+
     document.getElementById('menu').addEventListener('click', function () {
         window.location.href = "admin.html";
     });
 
-
     document.getElementById('jugar').addEventListener('click', function () {
+        localStorage.setItem('user', input1.value);
+        localStorage.setItem('nPreg', input2.value);
         divInici.classList.add("oculto");
         divPagina.classList.remove("oculto");
         loadQuestions();
     });
 }
 
-
 function loadQuestions() {
-    let numPreguntes = 5;
+    let numPreguntes = 10;
+
+
     fetch(`php/getPreguntes.php?numPreguntes=${numPreguntes}`)
         .then(response => {
             return response.json();
@@ -89,12 +107,11 @@ function loadQuestions() {
                 indexPregunta: 0,
                 respostes: [],
             };
-            estatDeLaPartida.respostes = new Array(data.length).fill({ id: 0, feta: false, resposta: 0 }); // Inicializamos las respuestas
+            estatDeLaPartida.respostes = new Array(data.length).fill({ id: 0, feta: false, resposta: 0 });
             iniciarTemporizador(30, estatDeLaPartida)
-            pintaPreguntes(estatDeLaPartida, data);
             inicializarEventos(estatDeLaPartida, data);
+            pintaPreguntes(estatDeLaPartida, data);
         });
-
 }
 
 
@@ -105,7 +122,7 @@ function pintaPreguntes(estatDeLaPartida, questions) {
     htmlString += `<br><br>${estatDeLaPartida.indexPregunta + 1} . ${questions[estatDeLaPartida.indexPregunta].pregunta}<br>`;
     for (let iResposta = 0; iResposta < opcions.length; iResposta++) {
         opcions[iResposta] = questions[estatDeLaPartida.indexPregunta].respostes[iResposta];
-        htmlString += `<br><button class="resposta" idP="${estatDeLaPartida.indexPregunta}" idR="${opcions[iResposta]}">${opcions[iResposta]}</button>`
+        htmlString += `<br><button class="resposta" idP="${estatDeLaPartida.indexPregunta}" idR="${opcions[iResposta]}">${opcions[iResposta]}</button><br>`
     }
 
     const divPartida = document.getElementById("partida");
@@ -116,6 +133,12 @@ function pintaPreguntes(estatDeLaPartida, questions) {
 }
 
 function inicializarEventos(estatDeLaPartida, questions) {
+
+    //Evitam que es dupliquin els EventListeners si es fan multiples jocs
+    document.getElementById('partida').replaceWith(document.getElementById('partida').cloneNode(true));
+    document.getElementById('final').replaceWith(document.getElementById('final').cloneNode(true));
+    document.getElementById('next').replaceWith(document.getElementById('next').cloneNode(true));
+    document.getElementById('prev').replaceWith(document.getElementById('prev').cloneNode(true));
 
     document.getElementById('partida').addEventListener('click', function (e) {
         if (e.target.classList.contains('resposta')) {
@@ -138,6 +161,7 @@ function inicializarEventos(estatDeLaPartida, questions) {
     });
 
     document.getElementById('final').addEventListener('click', function () {
+        clearInterval(intervaloTemporizador);
         const divPagina = document.getElementById("pagina");
         divPagina.classList.add("oculto");
         finalitzarPartida(estatDeLaPartida);
@@ -153,12 +177,10 @@ function actualitzarBotons(estatDeLaPartida, questions) {
 }
 
 function gestionarResposta(estatDeLaPartida, p, r) {
-    console.log(p, r);
     estatDeLaPartida.respostes[p] = { id: p, feta: true, resposta: r }
 }
 
 function finalitzarPartida(estatDeLaPartida) {
-
     fetch('php/finalitza.php', {
         method: 'POST',
         headers: {
@@ -176,12 +198,23 @@ function finalitzarPartida(estatDeLaPartida) {
 
 function actualizarFinalizar(data) {
     const divFinal = document.getElementById("finalitzar");
+    const divInici = document.getElementById("inici");
+    divInici.classList.add("oculto");
+    divFinal.classList.add("oculto");
+
+    //Vaciar DOM
+    while (divFinal.firstChild) {
+        divFinal.removeChild(divFinal.firstChild);
+    }
+
+    divFinal.classList.remove("oculto");
     const respuesta = document.createElement("h4");
     respuesta.textContent = `Has encertat ${data.correctAnswers} de ${data.totalQuestions} preguntes.`;
     const volver = document.createElement("button");
     volver.id = "tornaInici"
     volver.textContent = "Torna a començar"
     divFinal.appendChild(respuesta);
+    divFinal.appendChild(crearSaltoDeLinea());
     divFinal.appendChild(volver);
 
     document.getElementById('tornaInici').addEventListener('click', function () {
