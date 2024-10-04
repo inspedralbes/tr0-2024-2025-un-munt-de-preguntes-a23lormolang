@@ -143,6 +143,10 @@ function inicializarEventos(estatDeLaPartida, questions) {
     document.getElementById('partida').addEventListener('click', function (e) {
         if (e.target.classList.contains('resposta')) {
             gestionarResposta(estatDeLaPartida, e.target.getAttribute("idP"), e.target.getAttribute("idR"));
+            if (estatDeLaPartida.indexPregunta < questions.length - 1) {
+                estatDeLaPartida.indexPregunta++;
+                pintaPreguntes(estatDeLaPartida, questions);
+            }
         }
     });
 
@@ -191,7 +195,6 @@ function finalitzarPartida(estatDeLaPartida) {
         .then(response => response.json())
         .then(data => {
             actualizarFinalizar(data)
-            console.log(`Has encertat ${data.correctAnswers} de ${data.totalQuestions} preguntes.`);
         });
 
 }
