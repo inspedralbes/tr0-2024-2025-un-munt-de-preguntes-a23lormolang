@@ -180,6 +180,10 @@ function insertarPregunta() {
             })
             .then(data => {
                 divInsertar.classList.add("oculto");
+                Swal.fire({
+                    icon: "success",
+                    text: "S'ha inserit correctament",
+                  });
                 loadQuestions();
             });
 
@@ -199,6 +203,10 @@ function eliminarPregunta(idP) {
     })
         .then(response => { return response.text(); })
         .then(data => {
+            Swal.fire({
+                icon: "success",
+                text: "S'ha eliminat correctament",
+              });
             loadQuestions();
         })
         .catch(error => {
@@ -292,6 +300,10 @@ function editarPregunta(idP) {
                         return response.text();
                     })
                     .then(data => {
+                        Swal.fire({
+                            icon: "success",
+                            text: "S'ha editat correctament",
+                          });
                         divEditar.classList.add("oculto");
                         loadQuestions();
                     });

@@ -45,24 +45,23 @@ function iniciarUsuario() {
     const divInici = document.getElementById("inici");
 
     const parrafo1 = document.createElement("p");
-    parrafo1.textContent = "Insereix l'usuari: "
+    parrafo1.textContent = "Insereix l'usuari: ";
 
     const input1 = document.createElement("input");
-    input1.type = "text"
-    input1.id = "name"
-    input1.placeholder = "Nombre"
+    input1.type = "text";
+    input1.id = "name";
+    input1.placeholder = "Nombre";
 
     const parrafo2 = document.createElement("p");
-    parrafo2.textContent = "Introdueix el nombre de preguntes: "
+    parrafo2.textContent = "Introdueix el nombre de preguntes: ";
 
     const input2 = document.createElement("input");
-    input2.type = "number"
-    input2.id = "nPreguntes"
+    input2.type = "number";
+    input2.id = "nPreguntes";
 
     const boto = document.createElement("button");
-    boto.id = "jugar"
-    boto.textContent = "Jugar"
-    const salt = document.createElement("br");
+    boto.id = "jugar";
+    boto.textContent = "Jugar";
 
     divInici.appendChild(parrafo1);
     divInici.appendChild(input1);
@@ -77,8 +76,8 @@ function iniciarUsuario() {
     divInici.appendChild(crearSaltoDeLinea());
 
     const botoMenu = document.createElement("button");
-    botoMenu.id = "menu"
-    botoMenu.textContent = "Menu Preguntes"
+    botoMenu.id = "menu";
+    botoMenu.textContent = "Menu Preguntes";
     divInici.appendChild(botoMenu);
 
     document.getElementById('menu').addEventListener('click', function () {
@@ -86,6 +85,15 @@ function iniciarUsuario() {
     });
 
     document.getElementById('jugar').addEventListener('click', function () {
+        if (input1.value.trim() === "" || input2.value.trim() === "") {
+            Swal.fire({
+                icon: "error",
+                title: "ERROR",
+                text: "Insereix l'usuari i el nombre de preguntes",
+              });
+            return; 
+        }
+
         localStorage.setItem('user', input1.value);
         localStorage.setItem('nPreg', input2.value);
         divInici.classList.add("oculto");
@@ -95,7 +103,7 @@ function iniciarUsuario() {
 }
 
 function loadQuestions() {
-    let numPreguntes = 10;
+    let numPreguntes = localStorage.getItem('nPreg');
 
 
     fetch(`php/getPreguntes.php?numPreguntes=${numPreguntes}`)
