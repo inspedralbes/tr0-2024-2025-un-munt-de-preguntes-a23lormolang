@@ -102,7 +102,12 @@ button:disabled {
     max-width: 400px; /* Ancho máximo */
 }
 
-/* Ocultar elementos */
+.respuesta-seleccionada {
+    background-color: #4CAF50; 
+    color: white; 
+    border: 2px solid #2e7d32; 
+}
+
 .oculto {
     display: none;
 }

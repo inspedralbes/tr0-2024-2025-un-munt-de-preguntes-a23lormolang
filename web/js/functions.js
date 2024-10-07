@@ -139,6 +139,16 @@ function pintaPreguntes(estatDeLaPartida, questions) {
     const divPartida = document.getElementById("partida");
     divPartida.innerHTML = htmlString;
 
+    //Comprovació si la resposta ha estat selecionada
+    const respuestaSeleccionada = estatDeLaPartida.respostes[estatDeLaPartida.indexPregunta];
+    if (respuestaSeleccionada.feta) {
+        console.log(respuestaSeleccionada)
+        const botonSeleccionado = document.querySelector(`#partida button.resposta[idP="${estatDeLaPartida.indexPregunta}"][idR="${respuestaSeleccionada.resposta}"]`);
+        if (botonSeleccionado) {
+            botonSeleccionado.classList.add('respuesta-seleccionada');
+        }
+    }
+
     actualitzarBotons(estatDeLaPartida, questions);
 
 }
@@ -193,6 +203,17 @@ function actualitzarBotons(estatDeLaPartida, questions) {
 
 function gestionarResposta(estatDeLaPartida, p, r) {
     estatDeLaPartida.respostes[p] = { id: p, feta: true, resposta: r }
+
+    const botonesRespuestas = document.querySelectorAll(`#partida button.resposta[idP="${p}"]`);
+
+    botonesRespuestas.forEach((boton) => {
+        boton.classList.remove('respuesta-seleccionada');
+    });
+
+    const botonSeleccionado = document.querySelector(`#partida button.resposta[idP="${p}"][idR="${r}"]`);
+    if (botonSeleccionado) {
+        botonSeleccionado.classList.add('respuesta-seleccionada');
+    }
 }
 
 function finalitzarPartida(estatDeLaPartida) {
