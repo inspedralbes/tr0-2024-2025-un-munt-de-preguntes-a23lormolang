@@ -1,0 +1,113 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo del cuerpo */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* Estilo para el encabezado */
+h1 {
+    margin: 20px 0;
+    color: #007BFF;
+}
+
+/* Temporizador */
+#temporizador {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff4d4d; /* Color rojo para indicar urgencia */
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* Estilo del div de inicio */
+#inici {
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Disminuir tamaño de párrafos e inputs en el div de inicio */
+#inici p {
+    font-size: 16px; /* Disminuir tamaño de texto */
+    margin-bottom: 8px; /* Espaciado inferior */
+}
+
+#inici input {
+    font-size: 14px; /* Disminuir tamaño de texto */
+    padding: 8px; /* Espaciado interno */
+    margin-bottom: 15px; /* Espaciado inferior */
+    width: calc(100% - 22px); /* Ajustar ancho total */
+    max-width: 400px; /* Ancho máximo */
+    border: 1px solid #ccc; /* Borde gris */
+    border-radius: 4px; /* Bordes redondeados */
+}
+
+/* Estilo para el área de preguntas */
+#partida {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto; /* Centrar horizontalmente */
+    max-width: 600px; /* Ancho máximo */
+}
+
+/* Estilo para el contenedor de botones */
+.boton-container {
+    display: flex; /* Flexbox para alinear elementos */
+    justify-content: center; /* Centrar horizontalmente */
+    margin: 20px 0; /* Margen superior e inferior */
+}
+
+/* Estilo de botones */
+button {
+    background-color: #007BFF; /* Azul */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 10px; /* Espacio entre botones */
+    transition: background-color 0.3s, transform 0.2s; /* Transiciones */
+}
+
+/* Hover y enfoque para botones */
+button:hover {
+    background-color: #0056b3; /* Color más oscuro al pasar el mouse */
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+}
+
+button:disabled {
+    background-color: #cccccc; /* Color gris para botones deshabilitados */
+    cursor: not-allowed;
+}
+
+/* Estilo para la sección final */
+#finalitzar {
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto; /* Centrar */
+    max-width: 400px; /* Ancho máximo */
+}
+
+.respuesta-seleccionada {
+    background-color: #4CAF50; 
+    color: white; 
+    border: 2px solid #2e7d32; 
+}
+
+.oculto {
+    display: none;
+}
