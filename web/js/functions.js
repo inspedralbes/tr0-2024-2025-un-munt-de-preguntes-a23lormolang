@@ -142,7 +142,6 @@ function pintaPreguntes(estatDeLaPartida, questions) {
     //Comprovació si la resposta ha estat selecionada
     const respuestaSeleccionada = estatDeLaPartida.respostes[estatDeLaPartida.indexPregunta];
     if (respuestaSeleccionada.feta) {
-        console.log(respuestaSeleccionada)
         const botonSeleccionado = document.querySelector(`#partida button.resposta[idP="${estatDeLaPartida.indexPregunta}"][idR="${respuestaSeleccionada.resposta}"]`);
         if (botonSeleccionado) {
             botonSeleccionado.classList.add('respuesta-seleccionada');
