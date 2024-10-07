@@ -11,7 +11,6 @@ document.getElementById("taula").addEventListener('click', function (event) {
     }
 });
 
-
 loadQuestions();
 
 function loadQuestions() {
