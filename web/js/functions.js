@@ -90,6 +90,9 @@ function iniciarUsuario() {
                 icon: "error",
                 title: "ERROR",
                 text: "Insereix l'usuari i el nombre de preguntes",
+                showConfirmButton: false,
+                timerProgressBar: true,
+                timer:1500,
               });
             return; 
         }

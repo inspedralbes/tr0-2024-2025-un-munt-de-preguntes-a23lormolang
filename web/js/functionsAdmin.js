@@ -182,8 +182,12 @@ function insertarPregunta() {
                 divInsertar.classList.add("oculto");
                 Swal.fire({
                     icon: "success",
+                    title: "Insertat!",
                     text: "S'ha inserit correctament",
-                  });
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    timer: 1500,
+                });
                 loadQuestions();
             });
 
@@ -194,24 +198,41 @@ function insertarPregunta() {
 
 function eliminarPregunta(idP) {
 
-    fetch('php/eliminarPregunta.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ idP: idP })
-    })
-        .then(response => { return response.text(); })
-        .then(data => {
-            Swal.fire({
-                icon: "success",
-                text: "S'ha eliminat correctament",
-              });
-            loadQuestions();
-        })
-        .catch(error => {
-            console.error('Error en la solicitud:', error);
-        });
+    Swal.fire({
+        title: "Seguro que desea eliminarlo?",
+        text: "No se podra revertir el cambio!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminalo!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('php/eliminarPregunta.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ idP: idP })
+            })
+                .then(response => { return response.text(); })
+                .then(data => {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Eliminat!",
+                        text: "S'ha eliminat correctament",
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        timer: 1500,
+                      });
+                    loadQuestions();
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                });
+        }
+      });
+    
 }
 
 function editarPregunta(idP) {
@@ -302,8 +323,12 @@ function editarPregunta(idP) {
                     .then(data => {
                         Swal.fire({
                             icon: "success",
+                            title: "Editat!",
                             text: "S'ha editat correctament",
-                          });
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            timer: 1500,
+                        });
                         divEditar.classList.add("oculto");
                         loadQuestions();
                     });
